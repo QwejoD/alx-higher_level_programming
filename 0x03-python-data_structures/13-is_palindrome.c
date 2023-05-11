@@ -1,70 +1,34 @@
 #include "lists.h"
-#include <stdio.h>
+
+/**
+ * is_palindrome - checks if a linked list is a palindrome
+ *
+ * @head: the head address of the linked list
+ *
+ * Return: 1 if it's a palindrome, 0 else
+ */
 
 int is_palindrome(listint_t **head)
 {
-	listint_t *nhead, *tort, *hare, *ptort;
-	listint_t *cut = NULL, *half, *it1, *it2;
+	listint_t *cur = *head;
+	int tab[2048], i = 0, j = 0;
 
-	if (!head || !*head)
-		return (1);
-
-	nhead = *head;
-	if (nhead->next != NULL)
+	if (*head)
 	{
-		for (hare = nhead, tort = nhead; hare != NULL && hare->next != NULL;
-				ptort = tort, tort = tort->next)
-			hare = hare->next->next;
-		if (hare != NULL)
+		while (cur)
 		{
-			cut = tort;
-			tort = tort->next;
+			tab[i] = cur->n;
+			cur = cur->next;
+			i++;
 		}
-		ptort->next = NULL;
-		half = tort;
-		it1 = reverse_listint(&half);
-		for (it2 = *head; it2; it1 = it1->next, it2 = it2->next)
+
+		while (j < i / 2)
 		{
-			if (it2->n != it1->n)
+			if (tab[j] == tab[i - j - 1])
+				j++;
+			else
 				return (0);
 		}
-		if (cut == NULL)
-			ptort->next = half;
-		else
-		{
-			ptort->next = cut;
-			cut->next = half;
-		}
 	}
-
 	return (1);
-}
-
-/**
- * reverse_listint - Reverses a linked list in pladce
- * @head: Pointer to a pointer pointing to the first item in the list
- *
- * Return: The new head of the reversed list
- */
-listint_t *reverse_listint(listint_t **head)
-{
-	listint_t *next = NULL, *prev = NULL;
-
-	if (!head || !*head)
-		return (NULL);
-
-	while ((*head)->next)
-	{
-		next = (*head)->next;
-
-		(*head)->next = prev;
-
-		prev = *head;
-
-		*head = next;
-	}
-
-	(*head)->next = prev;
-
-	return (*head);
 }
